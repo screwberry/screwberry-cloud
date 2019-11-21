@@ -1,0 +1,5 @@
+resource_group_name       = "screwberry-rg"
+resource_group_location   = "northeurope"
+resource_prefix           = "screwberry"
+environment               = "development"
+terraform_script_version  = "1.00"
