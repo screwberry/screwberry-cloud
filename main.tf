@@ -47,8 +47,20 @@ resource "azurerm_iothub" "iothub" {
     capacity = "1"
   }
 
-  tags = {
-    project = "screwberry"
-    environment = "${var.resource_group_location}"
+  fallback_route {
+    endpoint_names = ["events"]
+    enabled = true
   }
+
+  tags = {
+    project     = "screwberry"
+    environment = "${var.environment}"
+  }
+}
+
+resource "azurerm_iothub_consumer_group" "cg" {
+  name                   = "unity"
+  iothub_name            = "${azurerm_iothub.iothub.name}"
+  eventhub_endpoint_name = "events"
+  resource_group_name    = "${azurerm_resource_group.rg.name}"
 }
