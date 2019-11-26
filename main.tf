@@ -16,6 +16,13 @@ provider "azurerm" {
     subscription_id = "${var.subscription_id}"
 }
 
+locals {
+  tags = {
+    project     = "screwberry"
+    environment = "${var.environment}"
+  }
+}
+
 resource "azurerm_resource_group" "rg" {
   name     = "${var.resource_group_name}"
   location = "${var.resource_group_location}"
@@ -54,10 +61,7 @@ resource "azurerm_iothub" "iothub" {
     enabled = true
   }
 
-  tags = {
-    project     = "screwberry"
-    environment = "${var.environment}"
-  }
+  tags = "${local.tags}"
 }
 
 resource "azurerm_iothub_consumer_group" "cg" {
@@ -89,10 +93,7 @@ resource "azurerm_public_ip" "pip" {
   allocation_method       = "Dynamic"
   idle_timeout_in_minutes = 30
 
-  tags = {
-    project     = "screwberry"
-    environment = "${var.environment}"
-  }
+  tags = "${local.tags}"
 }
 
 resource "azurerm_network_interface" "nic" {
@@ -115,11 +116,7 @@ resource "azurerm_virtual_machine" "vm" {
   network_interface_ids = ["${azurerm_network_interface.nic.id}"]
   vm_size               = "Standard_B1S"
 
-  # Uncomment this line to delete the OS disk automatically when deleting the VM
   delete_os_disk_on_termination = true
-
-
-  # Uncomment this line to delete the data disks automatically when deleting the VM
   delete_data_disks_on_termination = true
 
   storage_image_reference {
@@ -164,10 +161,7 @@ resource "azurerm_virtual_machine_extension" "ext" {
   }
 SETTINGS
 
-  tags = {
-    project     = "screwberry"
-    environment = "${var.environment}"
-  }
+  tags = "${local.tags}"
 }
 
 resource "azurerm_network_security_group" "sg" {
