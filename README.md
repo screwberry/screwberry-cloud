@@ -20,6 +20,7 @@ Follow these steps to deploy the infrastructure.
 3. Run `device.bat` to register your edge device in IoT Hub and get its connection string. You'll need this in the screwberry-edge part of the project.
 4. Get the endpoint string (TBA). You'll need this in the screwberry-3d part of the project.
 5. Set up Grafana (TBA). https://grafana.com/docs/features/datasources/mssql/
+6. Put connection string in Function App application settings (configuration/application settings).
 
 ### Configure (optional)
 
