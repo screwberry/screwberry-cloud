@@ -190,6 +190,8 @@ resource "azurerm_network_security_rule" "rule" {
   network_security_group_name = "${azurerm_network_security_group.sg.name}"
 }
 
+# SQL database resources
+
 resource "azurerm_sql_server" "dbserver" {
   name                         = "${var.resource_prefix}"
   resource_group_name          = "${azurerm_resource_group.rg.name}"
@@ -198,4 +200,12 @@ resource "azurerm_sql_server" "dbserver" {
   administrator_login          = "${var.SQL_user}"
   administrator_login_password = "${var.SQL_password}"
   tags                         = "${local.tags}"
+}
+
+resource "azurerm_sql_firewall_rule" "rule" {
+  name                = "${var.resource_prefix}-allow-azure-access"
+  resource_group_name = "${azurerm_resource_group.rg.name}"
+  server_name         = "${azurerm_sql_server.dbserver.name}"
+  start_ip_address    = "0.0.0.0"
+  end_ip_address      = "0.0.0.0"
 }
