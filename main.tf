@@ -1,7 +1,12 @@
+# Azure connection variables
 variable "subscription_id" {}
 variable "client_id" {}
 variable "client_secret" {}
 variable "tenant_id" {}
+# SQL server variables
+variable "SQL_user" {}
+variable "SQL_password" {}
+# Resource variables
 variable resource_group_name {}
 variable resource_group_location {}
 variable "resource_prefix" {}
@@ -183,4 +188,14 @@ resource "azurerm_network_security_rule" "rule" {
   destination_address_prefix  = "*"
   resource_group_name         = "${azurerm_resource_group.rg.name}"
   network_security_group_name = "${azurerm_network_security_group.sg.name}"
+}
+
+resource "azurerm_sql_server" "dbserver" {
+  name                         = "${var.resource_prefix}"
+  resource_group_name          = "${azurerm_resource_group.rg.name}"
+  location                     = "${azurerm_resource_group.rg.location}"
+  version                      = "12.0"
+  administrator_login          = "${var.SQL_user}"
+  administrator_login_password = "${var.SQL_password}"
+  tags                         = "${local.tags}"
 }
